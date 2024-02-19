@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
 
+use anime_launcher_sdk::integrations::steam;
 use relm4::prelude::*;
 
 use anime_launcher_sdk::config::ConfigExt;
@@ -126,7 +127,7 @@ fn main() -> anyhow::Result<()> {
 
     // Workaround for relm4 getting a file as an argument and being dumb about it.
     let mut args_fake: Vec<String> = Vec::new();
-    if(args.len()>=1) {
+    if args.len()>=1 {
         args_fake = vec![String::from(args[0].clone())];
     }
 
@@ -214,9 +215,9 @@ fn main() -> anyhow::Result<()> {
     tracing::info!("Set UI language to {}", i18n::get_lang());
 
     // Run FirstRun window if .first-run file persist
-    if FIRST_RUN_FILE.exists() {
+    if FIRST_RUN_FILE.exists() && !steam::is_install_managed_by_steam() {
         // Create the app
-        let app = RelmApp::new(APP_ID);
+        let app = RelmApp::new(APP_ID).with_args(args_fake);
 
         // Show first run window
         app.run::<FirstRunApp>(());

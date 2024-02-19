@@ -28,6 +28,8 @@ use anime_launcher_sdk::honkai::config::schema::launcher::LauncherStyle;
 use anime_launcher_sdk::honkai::states::*;
 use anime_launcher_sdk::honkai::consts::*;
 
+use anime_launcher_sdk::integrations::steam;
+
 use crate::*;
 use crate::ui::components::*;
 
@@ -701,12 +703,20 @@ impl SimpleComponent for App {
                                 }
 
                                 Err(err) => {
-                                    tracing::error!("Failed to sync components index");
-
-                                    sender.input(AppMsg::Toast {
-                                        title: tr!("components-index-sync-failed"),
-                                        description: Some(err.to_string())
-                                    });
+                                    match steam::launched_from() {
+                                        steam::LaunchedFrom::Steam => {
+                                            /* noop */ 
+                                            tracing::warn!("Failed to sync components index.");
+                                            tracing::warn!("Running as a Steam intermediary -- Ignoring failed component sync.");
+                                        },
+                                        steam::LaunchedFrom::Independent => {
+                                            tracing::error!("Failed to sync components index");
+                                            sender.input(AppMsg::Toast {
+                                                title: tr!("components-index-sync-failed"),
+                                                description: Some(err.to_string())
+                                            });
+                                        }
+                                    }
                                 }
                             }
                         }
