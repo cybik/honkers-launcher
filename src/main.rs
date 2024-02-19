@@ -124,6 +124,12 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
+    // Workaround for relm4 getting a file as an argument and being dumb about it.
+    let mut args_fake: Vec<String> = Vec::new();
+    if(args.len()>=1) {
+        args_fake = vec![String::from(args[0].clone())];
+    }
+
     // Prepare stdout logger
     let stdout = tracing_subscriber::fmt::layer()
         .pretty()
@@ -284,7 +290,7 @@ fn main() -> anyhow::Result<()> {
         }
 
         // Create the app
-        let app = RelmApp::new(APP_ID);
+        let app = RelmApp::new(APP_ID).with_args(args_fake);
 
         // Show main window
         app.run::<App>(());
