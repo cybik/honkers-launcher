@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
 
+use anime_launcher_sdk::integrations::steam;
 use relm4::prelude::*;
 
 use anime_launcher_sdk::config::ConfigExt;
@@ -210,7 +211,7 @@ fn main() -> anyhow::Result<()> {
     tracing::info!("Set UI language to {}", i18n::get_lang());
 
     // Run FirstRun window if .first-run file persist
-    if FIRST_RUN_FILE.exists() {
+    if FIRST_RUN_FILE.exists() && !steam::is_install_managed_by_steam() {
         // Create the app
         let app = RelmApp::new(APP_ID)
             .with_args(gtk_args);
