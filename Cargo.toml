@@ -1,8 +1,8 @@
 [package]
 name = "honkers-launcher"
 version = "1.6.1"
-description = "Honkers launcher"
-authors = ["Nikita Podvirnyy <krypt0nn@vk.com>"]
+description = "Honkers Launcher - Steam Variant"
+authors = ["Nikita Podvirnyy <krypt0nn@vk.com>", "Renaud Lepage <root@cybik.moe>"]
 homepage = "https://github.com/an-anime-team/honkers-launcher"
 repository = "https://github.com/an-anime-team/honkers-launcher"
 license = "GPL-3.0"
@@ -19,7 +19,7 @@ glib-build-tools = "0.19"
 
 [dependencies.anime-launcher-sdk]
 git = "https://github.com/cybik/anime-launcher-sdk"
-tag = "99.1.12.7"
+tag = "99.1.12.10"
 features = ["all", "honkai", "honkai-patch"]
 
 # path = "../anime-launcher-sdk" # ! for dev purposes only

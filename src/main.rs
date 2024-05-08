@@ -153,7 +153,11 @@ fn main() -> anyhow::Result<()> {
                 }
             },
 
-            arg => gtk_args.push(arg.to_string())
+            arg => {
+                if ! arg.to_string().ends_with(".exe") {
+                    gtk_args.push(arg.to_string());
+                }
+            }
         }
     }
 
